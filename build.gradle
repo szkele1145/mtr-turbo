@@ -92,7 +92,7 @@ dependencies {
 	}
 	// 编译目标 jar：loom 会自动 remap 到 named（Mojang 映射）编译环境
 	modImplementation files(deps.targetJar)
-	modImplementation "net.fabricmc:fabric-loader:0.15.11"
+	modImplementation "net.fabricmc:fabric-loader:0.16.13"
 	modImplementation deps.fabricApi
 	// ModMenu：配置屏入口点（仅 1.20.x，1.19.x 无 GuiGraphics）
 	if (hasModMenuScreen) {
