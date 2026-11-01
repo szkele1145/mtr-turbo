@@ -4,6 +4,8 @@ import mtrultra.MtrUltraConfig;
 import mtrultra.MtrUltraStats;
 import mtrultra.util.ScheduleRebuildFlag;
 import mtr.path.PathData;
+import mtr.data.DataCache;
+import mtr.data.Depot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -83,9 +85,23 @@ public abstract class TrainServerMixin {
 
 	// [修复 2026-10-21] require = 0：MTR 升级导致签名变化时 LOD 仅失效
 	//（全速模拟），不崩服务端。与 RailwayDataMixin 的降级策略一致。
+	//
+	// ★ [1.1.8 真机修复 2] 描述符原先把第 3/4 参写成 Object：
+	//   @Inject(method="simulateTrain", ...) 的描述符是**精确匹配**，
+	//   remap=false 时 mixin 不会做类型擦除/宽松匹配，
+	//   描述符与目标方法不逐字一致就抛
+	//   InvalidInjectionException: Invalid descriptor ... Expected (...,Lmtr/data/Depot;
+	//   Lmtr/data/DataCache;...)V but found (...,Ljava/lang/Object;Ljava/lang/Object;...)V
+	//   ⇒ **require=0 对描述符不匹配无效**（那是硬错误，不是"找不到注入点"）。
+	//   触发时机同 TrainServer 首次加载 = **创建车厂**，启动阶段不报错。
+	// 修法：写真实类型。javap 逐一核对 6 个目标 jar
+	//   （MTR 3.2.2-hf1 / YMTR 3.6.x × fabric/forge），
+	//   simulateTrain 签名**全部一致**：
+	//     (Level, float, Depot, DataCache, List, Map, Map, Map)
+	//   ⇒ 用真实类型不损失任何跨版本兼容性。
 	@Inject(method = "simulateTrain", at = @At("HEAD"), cancellable = true, require = 0)
 	private void mtrultra$simulationLod(
-			Level world, float ticksElapsed, Object depot, Object dataCache,
+			Level world, float ticksElapsed, Depot depot, DataCache dataCache,
 			List<Map<UUID, Long>> trainPositions,
 			@Coerce Map<Object, Set<Object>> trainsInPlayerRange,
 			@Coerce Map<Long, List<Object>> schedulesForPlatform,
