@@ -3,7 +3,7 @@ const https = require('https');
 const crypto = require('crypto');
 
 const tok = fs.readFileSync('F:\\vibe coding工程\\sfx\\.ghtoken', 'utf-8').trim();
-const repo = 'szkele1145/mtr-ultra';   // 仓库实际名（2026-10-21 API 核实：mtr-turbo 404，mtr-ultra 存在）
+const repo = 'szkele1145/mtr-turbo';   // 仓库实际名（2026-10-21 API 核实：mtr-turbo 404，mtr-ultra 存在）
 const tag = 'v1.1.5';
 
 const assets = [

@@ -1,7 +1,7 @@
 modLoader = "javafml"
 loaderVersion = "[47,)"
 license = "MIT"
-issueTrackerURL = "https://github.com/szkele1145/mtr-ultra/issues"
+issueTrackerURL = "https://github.com/szkele1145/mtr-turbo/issues"
 
 [[mods]]
 modId = "mtr_turbo"

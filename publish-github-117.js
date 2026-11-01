@@ -2,7 +2,7 @@ const fs = require('fs');
 const https = require('https');
 
 const tok = fs.readFileSync('F:\\vibe coding工程\\sfx\\.ghtoken', 'utf-8').trim();
-const repo = 'szkele1145/mtr-ultra';
+const repo = 'szkele1145/mtr-turbo';
 const tag = 'v1.1.7';
 
 const STAGE = 'F:\\vibe coding工程\\mtr-turbo\\release-117\\';

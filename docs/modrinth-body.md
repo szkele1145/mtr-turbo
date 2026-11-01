@@ -66,4 +66,4 @@ manually; the periodic log works everywhere.
 
 ## Source
 
-[GitHub — szkele1145/mtr-ultra](https://github.com/szkele1145/mtr-ultra) (MIT)
+[GitHub — szkele1145/mtr-turbo](https://github.com/szkele1145/mtr-turbo) (MIT)
