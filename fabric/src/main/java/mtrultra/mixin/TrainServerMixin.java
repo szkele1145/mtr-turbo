@@ -95,7 +95,7 @@ public abstract class TrainServerMixin {
 		// interval——开关关闭/手动载客列车会被按上一次的 4 倍步长模拟（真 bug）
 		if (!MtrUltraConfig.enableSimulationLod) {
 			mtrultra$simInterval = 1;
-			TrainServerTickScaleMixin.ULTRA_INTERVAL.set(1);
+			UltraInterval.set(1);
 			return; // 开关关闭：原版行为
 		}
 
@@ -103,7 +103,7 @@ public abstract class TrainServerMixin {
 		if (mtrultra$isManualOrRiding(world)) {
 			mtrultra$simInterval = 1;
 			mtrultra$simCounter = 0;
-			TrainServerTickScaleMixin.ULTRA_INTERVAL.set(1);
+			UltraInterval.set(1);
 			return;
 		}
 
@@ -119,7 +119,7 @@ public abstract class TrainServerMixin {
 		} else {
 			mtrultra$simCounter = 0;
 			// 到达间隔：写入 ThreadLocal 供伴生 ModifyArg 放大父类调用的步长
-			TrainServerTickScaleMixin.ULTRA_INTERVAL.set(mtrultra$simInterval);
+			UltraInterval.set(mtrultra$simInterval);
 			// 放行原方法
 		}
 	}

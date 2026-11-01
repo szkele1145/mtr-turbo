@@ -21,8 +21,16 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 @Mixin(targets = "mtr.data.TrainServer", remap = false)
 public abstract class TrainServerTickScaleMixin {
 
-	/** TrainServerMixin 写入、本类读取的单线程中转变量 */
-	static final ThreadLocal<Integer> ULTRA_INTERVAL = ThreadLocal.withInitial(() -> 1);
+	/**
+	 * [修复 2026-11-01] 变量已移入独立的 {@link UltraInterval} holder 类。
+	 * <p>
+	 * 原写法是本 mixin 内的包级可见 {@code static final ThreadLocal ULTRA_INTERVAL}，
+	 * 但 sponge-mixin 0.8.7 的 {@code MixinPreProcessorStandard.validateField}
+	 * 强制 mixin 类里的静态字段必须是 private，否则抛
+	 * {@code InvalidMixinException: contains non-private static field}。
+	 * 该异常只在 <b>TrainServer 类首次加载</b>（= 创建车厂）时才暴露，
+	 * 启动阶段不报错，极难定位。
+	 */
 
 	/**
 	 * 放大父类调用的 ticksElapsed（index=1，0-based）。
@@ -37,7 +45,7 @@ public abstract class TrainServerTickScaleMixin {
 			require = 0
 	)
 	private float mtrultra$scaleTicksElapsed(float original) {
-		final int interval = ULTRA_INTERVAL.get();
+		final int interval = UltraInterval.get();
 		return interval > 1 ? original * interval : original;
 	}
 }
